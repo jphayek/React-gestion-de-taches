@@ -41,6 +41,15 @@ function App() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  const editTask = (id, newText) => {
+  setTasks(
+    tasks.map((task) =>
+      task.id === id ? { ...task, text: newText } : task
+    )
+  );
+};
+
+
   const filteredTasks = tasks.filter((task) => {
     if (filter === "completed") return task.completed;
     if (filter === "active") return !task.completed;
@@ -64,7 +73,7 @@ function App() {
         </button>
       </form>
 
-      <TaskList tasks={filteredTasks} onToggle={toggleTask} onDelete={deleteTask} />
+      <TaskList tasks={filteredTasks} onToggle={toggleTask} onDelete={deleteTask} onEdit={editTask} />
 
       <div className="filters">
         <button
