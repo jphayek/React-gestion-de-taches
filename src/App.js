@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TaskList from "./components/TaskList";
 import "./App.css";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  // Charger les tasks depuis localStorage au démarrage
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem("tasks");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [filter, setFilter] = useState("all");
   const [inputValue, setInputValue] = useState("");
+
+  // Sauvegarder les tasks dans localStorage à chaque changement
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = (e) => {
     e.preventDefault();
