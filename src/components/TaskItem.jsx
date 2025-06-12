@@ -1,18 +1,17 @@
-import React from 'react';
+import React from "react";
 
 function TaskItem({ task, onToggle, onDelete }) {
   return (
-    <li>
-      <span
-        style={{
-          textDecoration: task.completed ? 'line-through' : 'none',
-          cursor: 'pointer'
-        }}
+    <li className="task-item">
+      <label
+        className={`task-label ${task.completed ? "completed" : ""}`}
         onClick={() => onToggle(task.id)}
       >
         {task.text}
-      </span>
-      <button onClick={() => onDelete(task.id)}>❌</button>
+      </label>
+      <button className="delete-button" onClick={() => onDelete(task.id)}>
+        ×
+      </button>
     </li>
   );
 }

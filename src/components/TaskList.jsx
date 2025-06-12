@@ -1,13 +1,9 @@
-import React from 'react';
-import TaskItem from './TaskItem';
+import React from "react";
+import TaskItem from "./TaskItem";
 
 function TaskList({ tasks, onToggle, onDelete }) {
-  if (tasks.length === 0) {
-    return <p>Aucune tâche à afficher.</p>;
-  }
-
   return (
-    <ul>
+    <ul className="task-list">
       {tasks.map((task) => (
         <TaskItem
           key={task.id}
@@ -19,4 +15,5 @@ function TaskList({ tasks, onToggle, onDelete }) {
     </ul>
   );
 }
+
 export default TaskList;

@@ -1,51 +1,82 @@
-import React, { useState } from 'react';
-import AddTaskForm from './components/AddTaskForm';
-import TaskList from './components/TaskList';
+import React, { useState } from "react";
+import TaskList from "./components/TaskList";
+import "./App.css";
 
 function App() {
-  const [task, setTask] = useState('');
   const [tasks, setTasks] = useState([]);
+  const [filter, setFilter] = useState("all");
+  const [inputValue, setInputValue] = useState("");
 
-  const handleSubmit = (e) => {
+  const addTask = (e) => {
     e.preventDefault();
-    if (task.trim() === '') return;
-    setTasks([...tasks, { id: Date.now(), text: task, completed: false }]);
-    setTask('');
+    if (!inputValue.trim()) return;
+    const newTask = {
+      id: Date.now(),
+      text: inputValue,
+      completed: false,
+    };
+    setTasks([newTask, ...tasks]);
+    setInputValue("");
   };
 
-  const [filter, setFilter] = useState('all'); // 'all', 'completed', 'active'
-
-
   const toggleTask = (id) => {
-    setTasks(tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter((t) => t.id !== id));
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
-
-  const filteredTasks = tasks.filter((t) => {
-    if (filter === 'completed') return t.completed;
-    if (filter === 'active') return !t.completed;
-    return true; // all
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "completed") return task.completed;
+    if (filter === "active") return !task.completed;
+    return true;
   });
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Ma ToDo App</h1>
-      <AddTaskForm task={task} setTask={setTask} handleSubmit={handleSubmit} />
+    <div className="app-container">
+      <h1 className="app-title">Ma To-Do List</h1>
+
+      <form onSubmit={addTask} className="task-form">
+        <input
+          type="text"
+          placeholder="Ajouter une tâche..."
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="task-input"
+        />
+        <button type="submit" className="task-button">
+          Ajouter
+        </button>
+      </form>
+
       <TaskList tasks={filteredTasks} onToggle={toggleTask} onDelete={deleteTask} />
 
-
-      <div style={{ marginTop: '20px' }}>
-        <button onClick={() => setFilter('all')}>Toutes</button>
-        <button onClick={() => setFilter('active')}>En cours</button>
-        <button onClick={() => setFilter('completed')}>Terminées</button>
+      <div className="filters">
+        <button
+          className={`filter-button ${filter === "all" ? "active" : ""}`}
+          onClick={() => setFilter("all")}
+        >
+          Toutes
+        </button>
+        <button
+          className={`filter-button ${filter === "active" ? "active" : ""}`}
+          onClick={() => setFilter("active")}
+        >
+          En cours
+        </button>
+        <button
+          className={`filter-button ${filter === "completed" ? "active" : ""}`}
+          onClick={() => setFilter("completed")}
+        >
+          Terminées
+        </button>
       </div>
     </div>
-
-    
   );
 }
 
